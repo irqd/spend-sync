@@ -1,14 +1,22 @@
-import './assets/main.css'
+import 'bootswatch/dist/journal/bootstrap.min.css';
+import router from './router';
+import './axios';
 
-import { createApp } from 'vue'
-import { createPinia } from 'pinia'
+import { createApp, markRaw } from 'vue';
+import { createPinia } from 'pinia';
 
-import App from './App.vue'
-import router from './router'
+import App from './App.vue';
 
-const app = createApp(App)
+const pinia = createPinia();
 
-app.use(createPinia())
-app.use(router)
+// This is the magic that makes the router work with Pinia
+pinia.use(({ store }) => {
+   store.router = markRaw(router);
+});
 
-app.mount('#app')
+const app = createApp(App);
+
+app.use(createPinia());
+app.use(router);
+
+app.mount('#app');

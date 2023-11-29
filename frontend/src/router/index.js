@@ -39,26 +39,25 @@ const router = createRouter({
   ]
 });
 
-router.beforeEach((to, from) => {
+// change this to per component navigation guards
+// this is very inefficient, as it calls the getUser() method
+// on every route change, even if the user is already logged in
+router.beforeEach(async (to, from) => {
   const authStore = useAuthStore();
+  await authStore.getUser();
 
-  // this will be called for every route change
-  // it checks if there is a logged in user and if the route requires authentication
-  // if there is no logged in user and the route requires authentication, it will redirect to login
-  if (!authStore.isAuthenticated && to.name === 'home') {
-    // add a flash message
-    const flashMessage = useFlashMessageStore();
+  if(!authStore.isAuthenticated && authenticatedRoutes.includes(to.name)) {
+    const flashMessageStore = useFlashMessageStore();
 
-    flashMessage.setFlashMessage(
-      'warning',
-      'You need to be logged in to access that page.'
+    flashMessageStore.setFlashMessage(
+      'danger', 
+      'You must be logged in to view that page.'
     );
-
+      
     return { name: 'login' };
   }
 
-  // if there is a logged in user and the route is guest, it will redirect to home
-  if (authStore.isAuthenticated && guestRoutes.includes(to.name)) {
+  if(authStore.isAuthenticated && guestRoutes.includes(to.name)) {  
     return { name: 'home' };
   }
 });

@@ -1,9 +1,8 @@
 import 'bootswatch/dist/journal/bootstrap.min.css';
-import router from './router';
-import './axios';
-
 import { createApp, markRaw } from 'vue';
 import { createPinia } from 'pinia';
+import router from './router';
+import './axios';
 
 import App from './App.vue';
 
@@ -15,8 +14,7 @@ pinia.use(({ store }) => {
 });
 
 const app = createApp(App);
-
-app.use(createPinia());
+app.use(pinia);
 app.use(router);
 
 app.mount('#app');

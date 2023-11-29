@@ -19,7 +19,7 @@
                   </router-link>
                </li>
             </ul>
-            <ul class="navbar-nav">
+            <ul class="navbar-nav" v-if="!authStore.isAuthenticated">
                <li class="nav-item">
                   <router-link 
                      :to="{
@@ -43,6 +43,14 @@
                   </router-link>
                </li>
             </ul>
+
+            <ul class="navbar-nav" v-else>
+               <li class="nav-item">
+                  <a type="button" class="nav-link" @click="authStore.handleLogout">
+                     Logout
+                  </a>
+               </li>
+            </ul>
          </div>
       </div>
    </nav>
@@ -50,6 +58,9 @@
 
 <script setup>
 import { RouterLink, useRoute } from 'vue-router';
+import { useAuthStore } from '../stores/auth';
+
+const authStore = useAuthStore();
 
 const route = useRoute();
 

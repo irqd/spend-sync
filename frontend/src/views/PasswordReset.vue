@@ -73,7 +73,7 @@
                   <div class="d-grid col-12 col-md-7 mb-3">
                      <button type="submit" class="btn btn-primary">
                         <span v-if="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                        Register
+                        Reset Password
                      </button>
                   </div>
                </div>
@@ -115,7 +115,6 @@ const handlePasswordReset = async (resetPasswordForm) => {
          'Password reset successfully, please login.'
       );
    } catch (error) {
-      console.log(error.response.data.errors);
       if (error.response.status === 422 && error.response.data.errors.password) {
          formErrors.value = error.response.data.errors;
       } else {

@@ -22,7 +22,7 @@
             ></button>
          </div>
          <div class="card-body shadow-sm">
-            <form @submit.prevent="authStore.handleLogin(loginForm)">
+            <form @submit.prevent="handleLogin(loginForm)">
                <div class="row justify-content-center">
                   <div class="col-12 col-md-7">
                      <div class="form-floating mb-3">
@@ -76,7 +76,10 @@
                </div>
                <div class="row justify-content-center">
                   <div class="d-grid col-12 col-md-7 mb-3">
-                     <button type="submit" class="btn btn-primary">Login</button>
+                     <button type="submit" class="btn btn-primary">
+                        <span v-if="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                        Login
+                     </button>
                   </div>
                </div>
             </form>
@@ -113,6 +116,22 @@ const loginForm = ref({
    password: 'password',
    remember_me: true,
 });
+
+const isLoading = ref(false);
+
+const handleLogin = async (loginForm) => {
+   try {
+      isLoading.value = true;
+      await authStore.handleLogin(loginForm);
+   } catch (error) {
+      // flashMessageStore.setFlashMessage({
+      //    message: error.response.data.message,
+      //    type: 'danger',
+      // });
+   } finally {
+      isLoading.value = false;
+   }
+};
 </script>
 
 <style scoped>

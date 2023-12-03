@@ -30,6 +30,10 @@ export const useFlashMessageStore = defineStore("flashMessage", {
             this.flashType = type;
             this.flashMessage = message;
             this.flashShow = show;
+
+            setTimeout(() => {
+               this.clearFlashMessage();
+            }, 5000);
          } catch (error) {
             console.error(error.message);
          }
@@ -37,6 +41,8 @@ export const useFlashMessageStore = defineStore("flashMessage", {
 
       clearFlashMessage() {
          this.flashShow = false;
+         this.flashType = null;
+         this.flashMessage = null;
       },
    }
 });

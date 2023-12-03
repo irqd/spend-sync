@@ -19,7 +19,25 @@ const router = createRouter({
     {
       path: '/',
       name: 'home',
-      component: Home
+      component: Home,
+      // doing this doesn't make that weird thing in which it shows the content in home page
+      // because authStore doesn't return a promise yet.
+      beforeEnter: async (to, from) => {
+        const authStore = useAuthStore();
+        
+        await authStore.getUser();
+
+        if(!authStore.isAuthenticated && authenticatedRoutes.includes(to.name)) {
+          const flashMessageStore = useFlashMessageStore();
+
+          flashMessageStore.setFlashMessage(
+            'danger', 
+            'You must be logged in to view that page.'
+          );
+            
+          return { name: 'login' };
+        }
+      }
     },
     {
       path: '/login',
@@ -42,25 +60,25 @@ const router = createRouter({
 // change this to per component navigation guards
 // this is very inefficient, as it calls the getUser() method
 // on every route change, even if the user is already logged in
-router.beforeEach(async (to, from) => {
-  const authStore = useAuthStore();
-  await authStore.getUser();
+// router.beforeEach(async (to, from) => {
+  
+//   await authStore.getUser();
 
-  if(!authStore.isAuthenticated && authenticatedRoutes.includes(to.name)) {
-    const flashMessageStore = useFlashMessageStore();
+//   if(!authStore.isAuthenticated && authenticatedRoutes.includes(to.name)) {
+//     const flashMessageStore = useFlashMessageStore();
 
-    flashMessageStore.setFlashMessage(
-      'danger', 
-      'You must be logged in to view that page.'
-    );
+//     flashMessageStore.setFlashMessage(
+//       'danger', 
+//       'You must be logged in to view that page.'
+//     );
       
-    return { name: 'login' };
-  }
+//     return { name: 'login' };
+//   }
 
-  if(authStore.isAuthenticated && guestRoutes.includes(to.name)) {  
-    return { name: 'home' };
-  }
-});
+//   if(authStore.isAuthenticated && guestRoutes.includes(to.name)) {  
+//     return { name: 'home' };
+//   }
+// });
 
 
 export default router;

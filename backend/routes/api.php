@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\V1\TransactionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +17,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
     return $request->user();
+});
+
+// api/v1/transaction
+Route::middleware(['auth:sanctum'])->prefix('v1')->group(function () {
+    Route::apiResource('transaction', TransactionController::class, [
+        'except' => ['show']
+    ]);
 });

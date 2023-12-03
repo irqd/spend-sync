@@ -6,9 +6,13 @@
          </div>
          <div 
             v-if="flashMessageStore.show" 
-            class="alert alert-danger alert-dismissible rounded-0"
+            class="alert alert-dismissible rounded-0"
             :class="{
-               show: flashMessageStore.message
+               show: flashMessageStore.message,
+               'alert-danger': flashMessageStore.type === 'danger',
+               'alert-success': flashMessageStore.type === 'success',
+               'alert-warning': flashMessageStore.type === 'warning',
+               'alert-info': flashMessageStore.type === 'info',
             }"
             role="alert"
             >

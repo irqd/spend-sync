@@ -57,6 +57,29 @@ export const useAuthStore = defineStore("auth", {
          this.router.push({ name: "home" });
       },
 
+      async handleForgotPassword(form) {
+         await this.getCsrfToken();
+
+         await axios.post('/forgot-password', {
+            email: form.email,
+         });
+      },
+
+      async handlePasswordReset(form) {
+         await this.getCsrfToken();
+
+         await axios.post('/reset-password', {
+            token: form.token,
+            email: form.email,
+            password: form.password,
+            password_confirmation: form.password_confirmation,
+         });
+
+         // await this.getUser();
+
+         this.router.push({ name: "login" });
+      },
+
       async handleLogout() {
          await axios.post('/logout');
 

@@ -2,7 +2,7 @@
    <div class="d-flex justify-content-center align-items-center vh-100">
       <div class="card">
          <div class="card-header text-bg-primary text-center">
-            <h3 class="card-title">Register</h3>
+            <h3 class="card-title">Password Reset</h3>
          </div>
          <div 
             v-if="flashMessageStore.show" 
@@ -26,47 +26,9 @@
             ></button>
          </div>
          <div class="card-body shadow-sm">
-            <form @submit.prevent="handleRegister(registerForm)">
+            <form @submit.prevent="handlePasswordReset(resetPasswordForm)">
                <div class="row justify-content-center">
                   <div class="col-12 col-md-7">
-                     <div class="form-floating mb-3">
-                        <input 
-                           type="text" 
-                           class="form-control"
-                           :class="{
-                              'is-invalid': formErrors.name
-                           }" 
-                           id="name" 
-                           placeholder="Test User"
-                           autocomplete="name"
-                           v-model="registerForm.name"
-                        >
-                        <label for="email">
-                           Name
-                        </label>
-                        <div class="invalid-feedback">
-                           {{ formErrors.name ? formErrors.name[0] : '' }}
-                        </div>
-                     </div>
-                     <div class="form-floating mb-3">
-                        <input 
-                           type="email" 
-                           class="form-control"
-                           :class="{
-                              'is-invalid': formErrors.email
-                           }" 
-                           id="email" 
-                           placeholder="name@example.com"
-                           autocomplete="email"
-                           v-model="registerForm.email"
-                        >
-                        <label for="email">
-                           Email address
-                        </label>
-                        <div class="invalid-feedback">
-                           {{ formErrors.email ? formErrors.email[0] : '' }}
-                        </div>
-                     </div>
                      <div class="form-floating mb-3">
                         <input 
                            type="password" 
@@ -77,7 +39,7 @@
                            id="password" 
                            placeholder="password"
                            autocomplete="current-password"
-                           v-model="registerForm.password"
+                           v-model="resetPasswordForm.password"
                         >
                         <label for="password">
                            Password
@@ -93,10 +55,10 @@
                            :class="{
                               'is-invalid': formErrors.password_confirmation
                            }" 
-                           id="password" 
+                           id="password_confirmation" 
                            placeholder="confirm password"
                            autocomplete="current-password"
-                           v-model="registerForm.password_confirmation"
+                           v-model="resetPasswordForm.password_confirmation"
                         >
                         <label for="password">
                            Confirm Password
@@ -116,19 +78,6 @@
                   </div>
                </div>
             </form>
-            <div class="row justify-content-center">
-               <div class="col-12 col-md-7">
-                  <div class="d-flex justify-content-center gap-2">
-                     <p>Got an account?</p>
-                     <router-link :to="{
-                        name: 'login'
-                     }"
-                        class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover">
-                        Login
-                     </router-link>
-                  </div>
-               </div>
-            </div>
          </div>
       </div>
    </div>
@@ -136,17 +85,18 @@
 
 <script setup>
 import { ref } from 'vue';
-import { RouterLink } from 'vue-router';
+import { RouterLink, useRoute } from 'vue-router';
 import { useFlashMessageStore } from '@/stores/flash-message';
 import { useAuthStore } from '@/stores/auth';
 
+const currentRoute = useRoute();
 const flashMessageStore = useFlashMessageStore();
 const authStore = useAuthStore();
 
 // default login credentials are provided for convenience
-const registerForm = ref({
-   name: '',
-   email: '',
+const resetPasswordForm = ref({
+   token: currentRoute.params.token,
+   email: currentRoute.query.email,
    password: '',
    password_confirmation: '',
 });
@@ -155,12 +105,18 @@ const formErrors = ref({});
 
 const isLoading = ref(false);
 
-const handleRegister = async (registerForm) => {
+const handlePasswordReset = async (resetPasswordForm) => {
    try {
       isLoading.value = true;
-      await authStore.handleRegister(registerForm);
+      await authStore.handlePasswordReset(resetPasswordForm);
+
+      flashMessageStore.setFlashMessage(
+         'success',
+         'Password reset successfully, please login.'
+      );
    } catch (error) {
-      if (error.response.status === 422) {
+      console.log(error.response.data.errors);
+      if (error.response.status === 422 && error.response.data.errors.password) {
          formErrors.value = error.response.data.errors;
       } else {
          flashMessageStore.setFlashMessage(

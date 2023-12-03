@@ -11,6 +11,7 @@ const guestRoutes = [
   'login',
   'register',
   'forgot-password',
+  'password-reset',
 ];
 
 const router = createRouter({
@@ -101,7 +102,28 @@ const router = createRouter({
           return { name: 'home' };
         }
       }
-    }
+    },
+    {
+      path: '/password-reset/:token',
+      name: 'password-reset',
+      component: () => import('../views/PasswordReset.vue'),
+      beforeEnter: async (to, from) => {
+        const authStore = useAuthStore();
+        
+        await authStore.getUser();
+
+        if(authStore.isAuthenticated && guestRoutes.includes(to.name)) {
+          const flashMessageStore = useFlashMessageStore();
+
+          flashMessageStore.setFlashMessage(
+            'danger', 
+            'You are already logged in.'
+          );
+            
+          return { name: 'home' };
+        }
+      }
+    },
   ]
 });
 

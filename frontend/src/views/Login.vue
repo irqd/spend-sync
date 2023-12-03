@@ -31,6 +31,7 @@
                            class="form-control" 
                            id="email" 
                            placeholder="name@example.com"
+                           autocomplete="email"
                            v-model="loginForm.email"
                         >
                         <label for="email">
@@ -43,6 +44,7 @@
                            class="form-control" 
                            id="password" 
                            placeholder="name@example.com"
+                           autocomplete="current-password"
                            v-model="loginForm.password"
                         >
                         <label for="password">
@@ -124,10 +126,10 @@ const handleLogin = async (loginForm) => {
       isLoading.value = true;
       await authStore.handleLogin(loginForm);
    } catch (error) {
-      // flashMessageStore.setFlashMessage({
-      //    message: error.response.data.message,
-      //    type: 'danger',
-      // });
+      flashMessageStore.setFlashMessage(
+         'danger',
+         error.response.data.message
+      );
    } finally {
       isLoading.value = false;
    }

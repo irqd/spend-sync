@@ -32,18 +32,14 @@ export const useAuthStore = defineStore("auth", {
       async handleLogin(form) {
          await this.getCsrfToken();
 
-         try {
-            await axios.post('/login', {
-               email: form.email,
-               password: form.password,
-            });
+         await axios.post('/login', {
+            email: form.email,
+            password: form.password,
+         });
 
-            await this.getUser();
+         await this.getUser();
 
-            this.router.push({ name: "home" });
-         } catch (error) {
-            console.log(error);
-         }
+         this.router.push({ name: "home" });
       },
 
       async handleLogout() {

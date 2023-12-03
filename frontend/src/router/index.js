@@ -42,43 +42,67 @@ const router = createRouter({
     {
       path: '/login',
       name: 'login',
-      component: () => import('../views/Login.vue')
+      component: () => import('../views/Login.vue'),
+      beforeEnter: async (to, from) => {
+        const authStore = useAuthStore();
+        
+        await authStore.getUser();
+
+        if(authStore.isAuthenticated && guestRoutes.includes(to.name)) {
+          const flashMessageStore = useFlashMessageStore();
+
+          flashMessageStore.setFlashMessage(
+            'danger', 
+            'You are already logged in.'
+          );
+            
+          return { name: 'home' };
+        }
+      }
     },
     {
       path: '/register',
       name: 'register',
-      component: () => import('../views/Register.vue')
+      component: () => import('../views/Register.vue'),
+      beforeEnter: async (to, from) => {
+        const authStore = useAuthStore();
+        
+        await authStore.getUser();
+
+        if(authStore.isAuthenticated && guestRoutes.includes(to.name)) {
+          const flashMessageStore = useFlashMessageStore();
+
+          flashMessageStore.setFlashMessage(
+            'danger', 
+            'You are already logged in.'
+          );
+            
+          return { name: 'home' };
+        }
+      }
     },
     {
       path: '/forgot-password',
       name: 'forgot-password',
-      component: () => import('../views/ForgotPassword.vue')
+      component: () => import('../views/ForgotPassword.vue'),
+      beforeEnter: async (to, from) => {
+        const authStore = useAuthStore();
+        
+        await authStore.getUser();
+
+        if(authStore.isAuthenticated && guestRoutes.includes(to.name)) {
+          const flashMessageStore = useFlashMessageStore();
+
+          flashMessageStore.setFlashMessage(
+            'danger', 
+            'You are already logged in.'
+          );
+            
+          return { name: 'home' };
+        }
+      }
     }
   ]
 });
-
-// change this to per component navigation guards
-// this is very inefficient, as it calls the getUser() method
-// on every route change, even if the user is already logged in
-// router.beforeEach(async (to, from) => {
-  
-//   await authStore.getUser();
-
-//   if(!authStore.isAuthenticated && authenticatedRoutes.includes(to.name)) {
-//     const flashMessageStore = useFlashMessageStore();
-
-//     flashMessageStore.setFlashMessage(
-//       'danger', 
-//       'You must be logged in to view that page.'
-//     );
-      
-//     return { name: 'login' };
-//   }
-
-//   if(authStore.isAuthenticated && guestRoutes.includes(to.name)) {  
-//     return { name: 'home' };
-//   }
-// });
-
 
 export default router;

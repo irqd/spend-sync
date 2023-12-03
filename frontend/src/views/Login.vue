@@ -28,7 +28,10 @@
                      <div class="form-floating mb-3">
                         <input 
                            type="email" 
-                           class="form-control" 
+                           class="form-control"
+                           :class="{
+                              'is-invalid': formErrors.email
+                           }" 
                            id="email" 
                            placeholder="name@example.com"
                            autocomplete="email"
@@ -37,19 +40,28 @@
                         <label for="email">
                            Email address
                         </label>
+                        <div class="invalid-feedback">
+                           {{ formErrors.email ? formErrors.email[0] : '' }}
+                        </div>
                      </div>
                      <div class="form-floating mb-3">
                         <input 
                            type="password" 
-                           class="form-control" 
+                           class="form-control"
+                           :class="{
+                              'is-invalid': formErrors.password
+                           }" 
                            id="password" 
-                           placeholder="name@example.com"
+                           placeholder="password"
                            autocomplete="current-password"
                            v-model="loginForm.password"
                         >
                         <label for="password">
                            Password
                         </label>
+                        <div class="invalid-feedback">
+                           {{ formErrors.password ? formErrors.password[0] : '' }}
+                        </div>
                      </div>
                   </div>
                </div>
@@ -119,6 +131,8 @@ const loginForm = ref({
    remember_me: true,
 });
 
+const formErrors = ref({});
+
 const isLoading = ref(false);
 
 const handleLogin = async (loginForm) => {
@@ -126,10 +140,14 @@ const handleLogin = async (loginForm) => {
       isLoading.value = true;
       await authStore.handleLogin(loginForm);
    } catch (error) {
-      flashMessageStore.setFlashMessage(
-         'danger',
-         error.response.data.message
-      );
+      if (error.response.status === 422) {
+         formErrors.value = error.response.data.errors;
+      } else {
+         flashMessageStore.setFlashMessage(
+            'danger',
+            error.response.data.message
+         );
+      }
    } finally {
       isLoading.value = false;
    }

@@ -1,4 +1,4 @@
-import 'bootswatch/dist/journal/bootstrap.min.css';
+import 'bootswatch/dist/materia/bootstrap.min.css';
 import { createApp, markRaw } from 'vue';
 import { createPinia } from 'pinia';
 import router from './router';

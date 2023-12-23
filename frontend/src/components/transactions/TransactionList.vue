@@ -27,8 +27,9 @@
                   <button class="btn btn-primary btn-sm me-1">
                      <i class="fa-solid fa-pen-to-square"></i>
                   </button>
-                  <button class="btn btn-danger btn-sm">
-                     <i class="fa-solid fa-trash"></i>
+                  <button class="btn btn-danger btn-sm" @click="deleteTransaction(transaction.id)">
+                     <span v-if="transaction.isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                     <i class="fa-solid fa-trash" v-else></i>
                   </button>
                </div>
             </div>
@@ -42,7 +43,10 @@
 </template>
 
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps, defineEmits, ref } from 'vue';
+import axios from 'axios';
+
+const emit = defineEmits(['transactionDeleted']);
 
 const props = defineProps({
    transactions: {
@@ -50,6 +54,20 @@ const props = defineProps({
       required: true
    }
 });
+
+const deleteTransaction = async (id) => {
+   const transaction = props.transactions.find(t => t.id === id);
+   transaction.isLoading = true;
+
+   try {
+      await axios.delete(`/api/v1/transaction/${id}`);
+      emit('transactionDeleted');
+   } catch (error) {
+      console.log(error);
+   } finally {
+      transaction.isLoading = false;
+   }
+}
 
 const formatDate = (date) => {
    const formattedDate = new Date(date).toLocaleDateString(

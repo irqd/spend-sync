@@ -1,11 +1,5 @@
 <template>
-  <div class="row justify-content-center mt-5 mb-3">
-    <div class="col-12 col-md-8">
-      <h3 class="m-0 pb-1">Expense Tracker</h3>
-      <div class="bg-primary p-1">
-      </div>
-    </div>
-  </div>
+  <Header/>
   <div class="row justify-content-center gap-0 mb-5">
     <div class="col-12 col-md-4">
       <div class="d-flex justify-content-center align-items-center gap-1">
@@ -14,9 +8,9 @@
       </div>
 
       <TotalBalance :balance="totalBalance"/>
-      <AddTransaction @transactionAdded="handleTransactionAdded"/>  
+      <AddTransaction @transactionAdded="fetchTransactions()"/>  
     </div>
-    <TransactionList :transactions="transactions"/>
+    <TransactionList :transactions="transactions" @transactionDeleted="fetchTransactions()"/>
   </div>
 </template>
 
@@ -26,6 +20,7 @@ import TotalBalance from '@/components/transactions/TotalBalance.vue';
 import TotalExpense from '@/components/transactions/TotalExpense.vue';
 import TotalIncome from '@/components/transactions/TotalIncome.vue';
 import AddTransaction from '@/components/transactions/AddTransaction.vue';
+import Header from '@/components/transactions/Header.vue';
 
 import { onMounted, ref } from 'vue';
 import axios from "axios";
@@ -45,10 +40,6 @@ const fetchTransactions = async () => {
   } catch (error) {
     console.log(error);
   }
-};
-
-const handleTransactionAdded = async () => {
-  await fetchTransactions();
 };
 
 onMounted(() => {

@@ -12,15 +12,15 @@
         <div class="card card-body text-center">
           <h6 class="m-0 pb-1">Income</h6>
           <p class="text-success">
-            <span class="fs-4">$</span>
-            <span class="fs-1">0</span>
+            <span class="fs-5">$</span>
+            <span class="fs-4">0</span>
           </p>
         </div>
         <div class="card card-body text-center">
           <h6 class="m-0 pb-1">Expenses</h6>
           <p class="text-danger">
-            <span class="fs-4">$</span>
-            <span class="fs-1">0</span>
+            <span class="fs-5">$</span>
+            <span class="fs-4">0</span>
           </p>
         </div>
       </div>
@@ -48,162 +48,33 @@
             <small> (add negative sign for expenses)</small>
             <input type="number" class="form-control" id="amount" placeholder="Enter amount">
           </div>
-          <div class="d-grid gap-2">
+          <div class="d-grid gap-2 mb-3">
             <button class="btn btn-primary" type="button">Submit</button>
           </div>
         </form>
       </div>
     </div>
-    <div class="col-12 col-md-4">
-      <h5 class="m-0 pb-1">Recent Transactions</h5>
-      <div class="bg-primary p-1 mb-2">
-      </div>
-      
-      <div class="d-flex flex-column gap-3">
-        <div class="card">
-          <div class="card-body p-2 d-flex justify-content-between align-items-center">
-            <div class="d-flex justify-content-between align-items-center gap-2">
-              <div>
-                <h6 class="m-0">Salary</h6>
-                <small class="text-muted">2021-09-01</small>
-              </div>
-              <div class="vr"></div>
-              <div>
-                <p class="m-0 text-success">
-                  <span class="fs-6 fw-bold">$</span>
-                  <span class="fs-4">0</span>
-                </p>
-              </div>
-            </div>
-            <div>
-              <button class="btn btn-primary btn-sm me-1">
-                <i class="fa-solid fa-pen-to-square"></i>
-              </button>
-              <button class="btn btn-danger btn-sm">
-                <i class="fa-solid fa-trash"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-body p-2 d-flex justify-content-between align-items-center">
-            <div class="d-flex justify-content-between align-items-center gap-2">
-              <div>
-                <h6 class="m-0">Salary</h6>
-                <small class="text-muted">2021-09-01</small>
-              </div>
-              <div class="vr"></div>
-              <div>
-                <p class="m-0 text-success">
-                  <span class="fs-6 fw-bold">$</span>
-                  <span class="fs-4">0</span>
-                </p>
-              </div>
-            </div>
-            <div>
-              <button class="btn btn-primary btn-sm me-1">
-                <i class="fa-solid fa-pen-to-square"></i>
-              </button>
-              <button class="btn btn-danger btn-sm">
-                <i class="fa-solid fa-trash"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-body p-2 d-flex justify-content-between align-items-center">
-            <div class="d-flex justify-content-between align-items-center gap-2">
-              <div>
-                <h6 class="m-0">Salary</h6>
-                <small class="text-muted">2021-09-01</small>
-              </div>
-              <div class="vr"></div>
-              <div>
-                <p class="m-0 text-success">
-                  <span class="fs-6 fw-bold">$</span>
-                  <span class="fs-4">0</span>
-                </p>
-              </div>
-            </div>
-            <div>
-              <button class="btn btn-primary btn-sm me-1">
-                <i class="fa-solid fa-pen-to-square"></i>
-              </button>
-              <button class="btn btn-danger btn-sm">
-                <i class="fa-solid fa-trash"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-body p-2 d-flex justify-content-between align-items-center">
-            <div class="d-flex justify-content-between align-items-center gap-2">
-              <div>
-                <h6 class="m-0">Salary</h6>
-                <small class="text-muted">2021-09-01</small>
-              </div>
-              <div class="vr"></div>
-              <div>
-                <p class="m-0 text-success">
-                  <span class="fs-6 fw-bold">$</span>
-                  <span class="fs-4">0</span>
-                </p>
-              </div>
-            </div>
-            <div>
-              <button class="btn btn-primary btn-sm me-1">
-                <i class="fa-solid fa-pen-to-square"></i>
-              </button>
-              <button class="btn btn-danger btn-sm">
-                <i class="fa-solid fa-trash"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <div class="card">
-          <div class="card-body p-2 d-flex justify-content-between align-items-center">
-            <div class="d-flex justify-content-between align-items-center gap-2">
-              <div>
-                <h6 class="m-0">Salary</h6>
-                <small class="text-muted">2021-09-01</small>
-              </div>
-              <div class="vr"></div>
-              <div>
-                <p class="m-0 text-success">
-                  <span class="fs-6 fw-bold">$</span>
-                  <span class="fs-4">0</span>
-                </p>
-              </div>
-            </div>
-            <div>
-              <button class="btn btn-primary btn-sm me-1">
-                <i class="fa-solid fa-pen-to-square"></i>
-              </button>
-              <button class="btn btn-danger btn-sm">
-                <i class="fa-solid fa-trash"></i>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+    <TransactionList :transactions="transactions"/>
   </div>
 </template>
 
 <script setup>
+import TransactionList from '@/components/transactions/TransactionList.vue';
 import { onMounted, ref } from 'vue';
 import axios from "axios";
 
 const transactions = ref([]);
+const totalIncome = ref(0);
+const totalExpense = ref(0);
+const totalBalance = ref(0);
 
 const fetchTransactions = async () => {
   try {
     const response = await axios.get('/api/v1/transaction');
-    transactions.value = response.data;
+    transactions.value = response.data.data;
+    totalIncome.value = response.data.totalIncome;
+    totalExpense.value = response.data.totalExpense;
+    totalBalance.value = response.data.totalBalance;
   } catch (error) {
     console.log(error);
   }

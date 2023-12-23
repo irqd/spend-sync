@@ -14,9 +14,9 @@ class TransactionCollection extends ResourceCollection
      */
     public function toArray(Request $request): array
     {   
-        $totalIncome = $this->collection->sum('income');
-        $totalExpense = $this->collection->sum('expense');
-        $totalBalance = $totalIncome - $totalExpense;
+        $totalIncome = $this->collection->where('type', 'income')->sum('amount');
+        $totalExpense = $this->collection->where('type', 'expense')->sum('amount');
+        $totalBalance = $totalIncome + $totalExpense;
 
         return [
             'data' => $this->collection,

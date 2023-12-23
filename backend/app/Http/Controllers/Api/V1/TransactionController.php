@@ -40,8 +40,16 @@ class TransactionController extends Controller
         ], 201);
     }
 
-    public function update(Request $request, Transaction $transaction)
-    {
+    public function update(TransactionRequest $request, Transaction $transaction)
+    {   
+        $data = $request->validated();
+
+        $transaction->update([
+            'label' => $data['label'],
+            'amount' => $data['amount'],
+            'type' => $data['amount'] < 0 ? 'expense' : 'income',
+        ]);
+
         return response()->json([
             'message' => 'Transaction update'
         ]);

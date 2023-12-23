@@ -10,7 +10,7 @@
       <TotalBalance :balance="totalBalance"/>
       <AddTransaction @transactionAdded="fetchTransactions()"/>  
     </div>
-    <TransactionList :transactions="transactions" @transactionDeleted="fetchTransactions()"/>
+    <TransactionList :transactions="transactions" @transactionUpdateOrDelete="fetchTransactions()"/>
   </div>
 </template>
 

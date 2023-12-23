@@ -9,50 +9,12 @@
   <div class="row justify-content-center gap-0 mb-5">
     <div class="col-12 col-md-4">
       <div class="d-flex justify-content-center align-items-center gap-1">
-        <div class="card card-body text-center">
-          <h6 class="m-0 pb-1">Income</h6>
-          <p class="text-success">
-            <span class="fs-5">$</span>
-            <span class="fs-4">0</span>
-          </p>
-        </div>
-        <div class="card card-body text-center">
-          <h6 class="m-0 pb-1">Expenses</h6>
-          <p class="text-danger">
-            <span class="fs-5">$</span>
-            <span class="fs-4">0</span>
-          </p>
-        </div>
+        <TotalIncome :income="totalIncome"/>
+        <TotalExpense :expense="totalExpense"/>
       </div>
 
-      <div class="mt-3">
-        <h5>Balance</h5>
-        <hr class="m-0 mb-2">
-        <p class="text-center">
-          <span class="fs-4">$</span>
-          <span class="fs-1">0</span>
-        </p>
-      </div>
-
-      <div class="mt-3">
-        <h5>Add New Transaction</h5>
-        <hr class="m-0 mb-2">
-
-        <form>
-          <div class="mb-3">
-            <label for="description" class="form-label fw-medium mb-0">Label</label>
-            <input type="text" class="form-control" id="description" placeholder="Enter label">
-          </div>
-          <div class="mb-3">
-            <label for="amount" class="form-label fw-medium mb-0">Amount</label>
-            <small> (add negative sign for expenses)</small>
-            <input type="number" class="form-control" id="amount" placeholder="Enter amount">
-          </div>
-          <div class="d-grid gap-2 mb-3">
-            <button class="btn btn-primary" type="button">Submit</button>
-          </div>
-        </form>
-      </div>
+      <TotalBalance :balance="totalBalance"/>
+      <AddTransaction />  
     </div>
     <TransactionList :transactions="transactions"/>
   </div>
@@ -60,6 +22,11 @@
 
 <script setup>
 import TransactionList from '@/components/transactions/TransactionList.vue';
+import TotalBalance from '@/components/transactions/TotalBalance.vue';
+import TotalExpense from '@/components/transactions/TotalExpense.vue';
+import TotalIncome from '@/components/transactions/TotalIncome.vue';
+import AddTransaction from '@/components/transactions/AddTransaction.vue';
+
 import { onMounted, ref } from 'vue';
 import axios from "axios";
 

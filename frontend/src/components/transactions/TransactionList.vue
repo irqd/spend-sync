@@ -5,7 +5,7 @@
       </div>
       
       <div class="d-flex flex-column gap-3" v-if="transactions.length != 0">
-         <div class="card" v-for="transaction in transactions">
+         <div class="card" v-for="transaction in transactions" :key="transaction.id" >
             <div class="card-body p-2 d-flex justify-content-between align-items-center">
                <div class="d-flex justify-content-between align-items-center gap-2">
                <div>

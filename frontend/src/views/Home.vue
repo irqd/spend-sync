@@ -14,7 +14,7 @@
       </div>
 
       <TotalBalance :balance="totalBalance"/>
-      <AddTransaction />  
+      <AddTransaction @transactionAdded="handleTransactionAdded"/>  
     </div>
     <TransactionList :transactions="transactions"/>
   </div>
@@ -45,6 +45,10 @@ const fetchTransactions = async () => {
   } catch (error) {
     console.log(error);
   }
+};
+
+const handleTransactionAdded = async () => {
+  await fetchTransactions();
 };
 
 onMounted(() => {
